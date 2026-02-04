@@ -1,1 +1,33 @@
+//custom variables for y coordinate of sun & horizon
+let sunHeight;
+let horizon = 220;
+
+function setup() {
+  createCanvas(400, 400,);
+}
+
+function draw() {
+  // set sky color - black for night and blue for day
+  if(sunHeight < horizon){ 
+    background('lightblue');
+  } else {
+    background(0);
+  }
+  
+  //sun follows y-coordinate of mouse
+  sunHeight = mouseY;
+  console.log(sunHeight < horizon)
+  
+  //sun
+  fill('yellow');
+  circle(200, sunHeight, 130);
+
+  //landscape
+  if (sunHeight < horizon) {
+    fill('green');
+  } else {
+    fill('green');
+  }
+  rect(0,horizon,400,horizon);
+}
 
