@@ -7,7 +7,7 @@
 .bottom-section {
     display: flex;          
     height: 70vh;           
-
+}
 /* Colonne */
 .column {
     flex: 1;                /* ogni colonna occupa spazio uguale */
