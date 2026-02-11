@@ -1,1 +1,16 @@
+.top-section {
+    padding: 20px;
+    background-color: #f4f4f4;
+}
 
+
+.bottom-section {
+    display: flex;          
+    height: 70vh;           
+
+/* Colonne */
+.column {
+    flex: 1;                /* ogni colonna occupa spazio uguale */
+    border: 1px solid #ccc;
+    padding: 20px;
+}
