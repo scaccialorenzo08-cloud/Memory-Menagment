@@ -1,7 +1,7 @@
 let topHeight=120;
 
 function setup() {
-  createCanvas(900, 600);
+  createCanvas(windowWidth, windowHeight);
 }
 
 function draw() {
