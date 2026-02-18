@@ -16,14 +16,19 @@ function draw() {
   let colWidth=width/3;
   let bottomHeight=height-topHeight;
   //colonna1
-  fill(255,0,0);
+  fill("lightgray");
   rect(0,topHeight,colWidth,bottomHeight);
+  stroke("black");
+  strokeWeight(4);
   
   //colonna 2
-  fill(0,255,0);
+  fill("lightgray");
   rect(colWidth,topHeight,colWidth,bottomHeight);
-  
+  stroke("black");
+  strokeWeight(4);
   //colonna3
-  fill(0,0,255);
+  fill("lightgray");
   rect(colWidth*2,topHeight,colWidth,bottomHeight);
+  stroke("black");
+  strokeWeight(4);
 }
