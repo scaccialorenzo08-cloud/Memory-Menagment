@@ -15,20 +15,17 @@ function draw() {
   //sotto 3 colonne
   let colWidth=width/3;
   let bottomHeight=height-topHeight;
-  //colonna1
-  fill("lightgray");
-  rect(0,topHeight,colWidth,bottomHeight);
-  stroke("black");
-  strokeWeight(4);
   
-  //colonna 2
-  fill("lightgray");
-  rect(colWidth,topHeight,colWidth,bottomHeight);
+  //colonna1/2/3
   stroke("black");
-  strokeWeight(4);
-  //colonna3
+  strokeWeight(2);
   fill("lightgray");
-  rect(colWidth*2,topHeight,colWidth,bottomHeight);
-  stroke("black");
-  strokeWeight(4);
+
+  // 3 colonne
+  rect(0, topHeight, colWidth, bottomHeight);
+  rect(colWidth, topHeight, colWidth, bottomHeight);
+  rect(colWidth * 2, topHeight, colWidth, bottomHeight);
+}
+  
+
 }
