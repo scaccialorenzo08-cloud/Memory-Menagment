@@ -50,15 +50,23 @@ function draw() {
 
   // linea sopra colonne
   line(0, topHeight, width, topHeight);
+
+  // disegno processi nella colonna sinistra
+  for (let i = 0; i < processi.length; i++) {
+    let p = processi[i];
+    fill(p.colore);
+    stroke(0);
+    rect(p.x, p.y, p.width, p.height);
+
+    fill(0);
+    noStroke();
+    textSize(16);
+    text(p.nome, p.x + 5, p.y + p.height / 2 + 5);
+  }
 }
 
-
-// 
 // funzione creaTabella (DOM)
-// 
-
 function creaTabella() {
-
   let container = document.getElementById("tabellaProcessi");
 
   let table = document.createElement("table");
@@ -69,11 +77,9 @@ function creaTabella() {
   let intestazioni = ["Nome", "Dimensione", "Colore"];
 
   for (let i = 0; i < intestazioni.length; i++) {
-
     let th = document.createElement("th");
     th.textContent = intestazioni[i];
     tr.appendChild(th);
-
   }
 
   thead.appendChild(tr);
@@ -84,16 +90,10 @@ function creaTabella() {
   table.appendChild(tabellaBody);
 
   container.appendChild(table);
-
 }
 
-
-
 // funzione aggiungiProcesso
-
-
 function aggiungiProcesso() {
-
   if (numeroMassimo == 0) {
     alert("Inserisci prima il numero di processi");
     return;
@@ -111,22 +111,21 @@ function aggiungiProcesso() {
   let processo = {
     nome: nome,
     colore: colore,
-    dimensione: dimensione
+    dimensione: dimensione,
+    x: 10, // posizione iniziale x nella colonna sinistra
+    y: topHeight + 10 + processi.length * 60, // posizione iniziale y, sotto i precedenti
+    width: 80, // larghezza rettangolo
+    height: 50, // altezza rettangolo
+    dragging: false
   };
 
   processi.push(processo);
 
   aggiungiRigaTabella(processo);
-
 }
 
-
-
 // funzione aggiungiRigaTabella
-
-
 function aggiungiRigaTabella(p) {
-
   let tr = document.createElement("tr");
 
   let tdNome = document.createElement("td");
@@ -143,11 +142,41 @@ function aggiungiRigaTabella(p) {
   tr.appendChild(tdCol);
 
   tabellaBody.appendChild(tr);
-
 }
-
 
 // funzione numeroProcessi
 function numeroProcessi() {
   numeroMassimo = document.getElementById("numProcessi").value;
+}
+
+//  Drag & Drop 
+function mousePressed() {
+  for (let i = 0; i < processi.length; i++) {
+    let p = processi[i];
+    if (mouseX > p.x && mouseX < p.x + p.width && mouseY > p.y && mouseY < p.y + p.height) {
+      p.dragging = true;
+      p.offsetX = mouseX - p.x;
+      p.offsetY = mouseY - p.y;
+    }
+  }
+}
+
+function mouseDragged() {
+  for (let i = 0; i < processi.length; i++) {
+    let p = processi[i];
+    if (p.dragging) {
+      p.x = mouseX - p.offsetX;
+      p.y = mouseY - p.offsetY;
+    }
+  }
+}
+
+function mouseReleased() {
+  for (let i = 0; i < processi.length; i++) {
+    let p = processi[i];
+    if (p.dragging) {
+      p.dragging = false;
+      // qui modifiche per inserimento ram
+    }
+  }
 }
