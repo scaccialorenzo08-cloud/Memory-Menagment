@@ -6,6 +6,10 @@ let processi = [];
 let tabellaBody;
 let numeroMassimo = 0;
 
+// array per processi allocati in RAM
+let partizioni = [];
+let colWidth;
+
 // setup p5
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -23,7 +27,7 @@ function draw() {
   rect(0, 0, width, topHeight);
 
   // 3 colonne
-  let colWidth = width / 3;
+  colWidth = width / 3;
   let bottomHeight = height - topHeight;
 
   // colonne
@@ -63,14 +67,29 @@ function draw() {
     textSize(16);
     text(p.nome, p.x + 5, p.y + p.height / 2 + 5);
   }
+
+  // disegno processi allocati in RAM (colonna centrale)
+  for (let i = 0; i < partizioni.length; i++) {
+    let p = partizioni[i];
+    fill(p.colore);
+    stroke(0);
+    rect(p.ramX, p.ramY, p.width, p.height);
+
+    fill(0);
+    noStroke();
+    textSize(16);
+    text(p.nome, p.ramX + 5, p.ramY + p.height / 2 + 5);
+  }
 }
 
+
 // funzione creaTabella (DOM)
+
+
 function creaTabella() {
   let container = document.getElementById("tabellaProcessi");
 
   let table = document.createElement("table");
-
   let thead = document.createElement("thead");
   let tr = document.createElement("tr");
 
@@ -92,7 +111,10 @@ function creaTabella() {
   container.appendChild(table);
 }
 
+
 // funzione aggiungiProcesso
+
+
 function aggiungiProcesso() {
   if (numeroMassimo == 0) {
     alert("Inserisci prima il numero di processi");
@@ -106,16 +128,16 @@ function aggiungiProcesso() {
 
   let nome = document.getElementById("nome").value;
   let colore = document.getElementById("colore").value;
-  let dimensione = document.getElementById("dimensione").value;
+  let dimensione = parseInt(document.getElementById("dimensione").value);
 
   let processo = {
     nome: nome,
     colore: colore,
     dimensione: dimensione,
-    x: 10, // posizione iniziale x nella colonna sinistra
-    y: topHeight + 10 + processi.length * 60, // posizione iniziale y, sotto i precedenti
-    width: 80, // larghezza rettangolo
-    height: 50, // altezza rettangolo
+    x: 10,
+    y: topHeight + 10 + processi.length * 60,
+    width: 80,
+    height: 50,
     dragging: false
   };
 
@@ -124,7 +146,9 @@ function aggiungiProcesso() {
   aggiungiRigaTabella(processo);
 }
 
+
 // funzione aggiungiRigaTabella
+
 function aggiungiRigaTabella(p) {
   let tr = document.createElement("tr");
 
@@ -144,12 +168,17 @@ function aggiungiRigaTabella(p) {
   tabellaBody.appendChild(tr);
 }
 
+
 // funzione numeroProcessi
+
 function numeroProcessi() {
   numeroMassimo = document.getElementById("numProcessi").value;
 }
 
-//  Drag & Drop 
+
+// drag & drop
+//funzione mousePressed
+
 function mousePressed() {
   for (let i = 0; i < processi.length; i++) {
     let p = processi[i];
@@ -160,7 +189,7 @@ function mousePressed() {
     }
   }
 }
-
+//funzione mouseDragged
 function mouseDragged() {
   for (let i = 0; i < processi.length; i++) {
     let p = processi[i];
@@ -171,12 +200,39 @@ function mouseDragged() {
   }
 }
 
+// simulazione RAM partizioni dinamiche
+
+//funzione mouseRelased
+
 function mouseReleased() {
   for (let i = 0; i < processi.length; i++) {
     let p = processi[i];
     if (p.dragging) {
       p.dragging = false;
-      // qui modifiche per inserimento ram
+
+      // se rilasci nella colonna centrale 
+      if (p.x > colWidth && p.x < colWidth * 2) {
+        // alloca nella RAM in basso
+        let ramY = topHeight + 10;
+        if (partizioni.length > 0) {
+          let last = partizioni[partizioni.length - 1];
+          ramY = last.ramY + last.height + 10;
+        }
+        p.ramX = colWidth + 10;
+        p.ramY = ramY;
+
+        // aggiungo partizioni RAM
+        partizioni.push(p);
+
+        // posizione iniziale nella colonna sinistra
+        p.x = 10;
+        p.y = topHeight + 10 + i * 60;
+      }
     }
   }
+}
+
+//TASTO DEALLOCATION
+function deallocaRAM() {
+  partizioni = [];
 }
